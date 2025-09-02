@@ -5,7 +5,7 @@ const getUserInfo = require('./utils/getUserInfo')
 
 const app = express();
 const connectDb = require('./config/dbConnect.js')
-const dotenv = require("dotenv")
+const dotenv = require("dotenv");
 dotenv.config();
 
 
@@ -27,15 +27,35 @@ connectDb().then();
 //     res.send(data);
 // })
 
-// app.post("/register", async(req,res)=>{
-//     const {username,email, events, contactNo} = req.body
-//     const newUser = 'dummy' // db query to create newUser in table after validation
-//     if(!newUser){
-//     res.status(500).send("Server error, Please contact this no. 2839247483"); // if newUser unsuccessful
-//     }
+app.get("/events", async(req,res)=>{
+    const eventList = await Event.find({eventStatus: true}, 'name prizePool organizer participants description dateOfEvent ').exec();
+    res.send(eventList);
+})
 
-//     res.send("success") // newUser created, reflect data on client-side
-// })
+app.post("/register", async(req,res)=>{
+    const {username, events, email} = req.body
+
+    const User = await User.findOne({email : email}, 'name').exec() 
+    if(User){
+    res.status(400).send("User already Registered"); 
+    }
+    
+
+    try {
+    const newUser = new User({
+      name: username,
+      email: email,
+      events: events,
+    });
+
+    // Save the user to the database
+     await newUser.save();
+
+    res.send('User Created Successfully')
+  } catch (error) {
+    res.status(500).send('Error creating user');
+  }
+})
 
 // app.post("/login",checkJwt, async(req,res)=>{
 //     const token = req.headers.authorization && req.headers.authorization.split(' ')[1];

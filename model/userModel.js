@@ -5,14 +5,12 @@ const mongoose = require ('mongoose')
 
 const userScehma = new mongoose.Schema({
     name:{ type : String },
-    address : { type : String },
-    profileImage : { type : String },
     events :[{
         type: mongoose.Schema.Types.ObjectId,
         ref : 'Event',
     }],
-    age: {type : Number},
-    email :{ type: String }
+    email :{ type: String },
+    paid :{type: Boolean}
 },{timestamps:true});
 
 const User = new mongoose.model("User",userScehma);
