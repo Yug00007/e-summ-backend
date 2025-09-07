@@ -6,16 +6,18 @@ const eventSchema = new mongoose.Schema({
     name:{type:String},
     prizePool : {type:Number},
     organizer : {type : mongoose.Schema.Types.ObjectId,
-        ref:'User'
+        ref:'User',
+        default : null
     },
     participants : [{
         type:mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        default: null
     }],
     description:{type:String},
     dateOfEvent : {type:String},
     eventStatus : {type:Boolean}
-})
+},{timestamps:true})
 
 const Event = mongoose.model('Events',eventSchema);
 
