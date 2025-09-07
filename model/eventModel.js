@@ -6,7 +6,7 @@ const eventSchema = new mongoose.Schema({
     name:{type:String},
     prizePool : {type:Number},
     organizer : {type : mongoose.Schema.Types.ObjectId,
-        ref:'User',
+        ref:'Organizer',
         default : null
     },
     participants : [{
